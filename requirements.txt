@@ -1,6 +1,1 @@
-pandas
-requests
-beautifulsoup4
-flask
-lxml
-qbittorrentapi
+
