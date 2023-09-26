@@ -1,4 +1,4 @@
-FROM python:3.11-alpine
+FROM python:3.11
 COPY . /huntorr
 WORKDIR /huntorr
 RUN pip install -r requirements.txt
