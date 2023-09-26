@@ -1,4 +1,4 @@
-FROM arm64v8/python:3.11.5-alpine3.18
+FROM arm64v8/python:3.11
 COPY . /huntorr
 WORKDIR /huntorr
 RUN pip install -r requirements.txt
