@@ -1,1 +1,5 @@
+requests==2.31.0
+beautifulsoup4==4.12.2
 flask==2.3.3
+lxml==4.9.3
+qbittorrent-api==2023.7.52
