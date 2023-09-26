@@ -1,6 +1,7 @@
-FROM arm64v8/python:3.11.5
+FROM arm64v8/python:3.11-alpine
 COPY . /huntorr
 WORKDIR /huntorr
+RUN apk add py3-pip
 RUN pip install -r requirements.txt
 EXPOSE 5000
 ENTRYPOINT ["python"]
