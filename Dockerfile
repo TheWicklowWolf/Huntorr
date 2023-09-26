@@ -1,4 +1,4 @@
-FROM arm64v8/python:3.11-alpine
+FROM python:3.11-alpine
 COPY . /huntorr
 WORKDIR /huntorr
 RUN apk add py3-pip
