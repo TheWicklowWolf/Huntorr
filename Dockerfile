@@ -1,4 +1,4 @@
-FROM arm64v8/python:3.11
+FROM aarm64v8/python:3
 COPY . /huntorr
 WORKDIR /huntorr
 RUN pip install -r requirements.txt
