@@ -1,5 +1,5 @@
 ![Build Status](https://github.com/TheWicklowWolf/Huntorr/actions/workflows/main.yml/badge.svg)
-![Docker Pulls](https://img.shields.io/docker/pulls/TheWicklowWolf/Huntorr.svg)
+![Docker Pulls](https://img.shields.io/docker/pulls/thewicklowwolf/huntorr.svg)
 
 <p align="center">
   
