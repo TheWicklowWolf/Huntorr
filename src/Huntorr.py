@@ -1,7 +1,6 @@
 import logging
 import os
 import sys
-import traceback
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
@@ -47,10 +46,10 @@ app.secret_key = "secret_key"
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(message)s", datefmt="%d/%m/%Y %H:%M:%S", handlers=[logging.StreamHandler(sys.stdout)])
 logger = logging.getLogger()
 
-torUserName = "admin"  # os.environ["torrenter_username"]
-torPassword = "abcRaspberry123"  # os.environ["torrenter_password"]
-torIP = "192.168.1.222"  # os.environ["torrenter_ip"]
-torPort = "5001"  # os.environ["torrenter_port"]
+torUserName = os.environ["torrenter_username"]
+torPassword = os.environ["torrenter_password"]
+torIP = os.environ["torrenter_ip"]
+torPort = os.environ["torrenter_port"]
 torAddress = "http://" + torIP + ":" + torPort
 
 qbit = QBittorrentAPI(torAddress, torUserName, torPassword)
@@ -200,7 +199,3 @@ def send_magnet():
         return {"Status": "Error: " + str(e)}
     else:
         return {"Status": "Success: Magnet Added"}
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)

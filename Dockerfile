@@ -3,5 +3,4 @@ COPY . /huntorr
 WORKDIR /huntorr
 RUN pip install -r requirements.txt
 EXPOSE 5000
-ENTRYPOINT ["python"]
-CMD ["src/Huntorr.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000","src.Huntorr:app", "-c", "gunicorn_config.py"]
