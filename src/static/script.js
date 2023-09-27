@@ -28,7 +28,7 @@ searchButton.addEventListener('click', function () {
     else if (document.getElementById('RadioPB').checked) {
         engineText = 'PB';
     }
-    fetch('/', {
+    fetch('/search', {
         headers: {
             'Content-Type': 'application/json'
         },
@@ -80,7 +80,7 @@ choiceButton.addEventListener('click', function () {
     }
     else {
         choiceButton.disabled = true;
-        fetch('/', {
+        fetch('/send_magnet', {
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -92,7 +92,12 @@ choiceButton.addEventListener('click', function () {
                     response.json()
                         .then(function (response) {
                             choiceButton.disabled = false;
-                            console.log(response)
+                            choiceNo.style.color = 'blue';
+                            choiceNo.value = response.Status;
+                            setTimeout(function () {
+                                choiceNo.value = "Enter Choice Number";
+                                choiceNo.style.color = '';
+                            }, 3000);
                         });
                 }
                 else {

@@ -1,12 +1,59 @@
 import logging
 import os
+import sys
 import traceback
-from datetime import datetime
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
 from flask import Flask, jsonify, render_template, request
 from qbittorrentapi import Client
+
+
+class QBittorrentAPI:
+    def __init__(self, base_url, username, password):
+        self.base_url = base_url
+        self.username = username
+        self.password = password
+        self.results = None
+
+    def connect(self):
+        try:
+            self.qb = Client(host=self.base_url, username=self.username, password=self.password)
+            self.qb.auth_log_in()
+        except Exception as e:
+            logger.error(str(e))
+            raise Exception(str(e))
+
+    def get_list(self):
+        try:
+            torrents = None
+            torrents = self.qb.torrents_info()
+
+        except Exception as e:
+            logger.error(str(e))
+
+        return torrents
+
+    def add_new(self, dl_choice):
+        try:
+            magnet_link = self.results["Magnet"].loc[dl_choice]
+            new_torrent = self.qb.torrents_add(urls=magnet_link)
+        except Exception as e:
+            logger.error(str(e))
+
+
+app = Flask(__name__)
+app.secret_key = "secret_key"
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(message)s", datefmt="%d/%m/%Y %H:%M:%S", handlers=[logging.StreamHandler(sys.stdout)])
+logger = logging.getLogger()
+
+torUserName = "admin"  # os.environ["torrenter_username"]
+torPassword = "abcRaspberry123"  # os.environ["torrenter_password"]
+torIP = "192.168.1.222"  # os.environ["torrenter_ip"]
+torPort = "5001"  # os.environ["torrenter_port"]
+torAddress = "http://" + torIP + ":" + torPort
+
+qbit = QBittorrentAPI(torAddress, torUserName, torPassword)
 
 sites = [
     {"name": "1377X", "base_url": "https://1377x.to", "search_url": "https://1377x.to/search/", "query_space_replace": "%20", "search_url_suffix": "/1/"},
@@ -42,16 +89,13 @@ def getResults(query, selector):
     for tag in tags:
         try:
             r_hol = parseResult(site, tag)
-            if r_hol != None:
+            if r_hol:
                 new_r_hol = pd.DataFrame([r_hol])
             else:
                 new_r_hol = None
             results = pd.concat([results, new_r_hol], axis=0, ignore_index=True)
         except Exception as e:
-            now = datetime.now()
-            dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-            with open("Flask.log", "a") as myfile:
-                myfile.write(dt_string + "\n" + str(tag) + "\n" + str(e) + traceback.format_exc() + "\n*******************\n")
+            logger.error(str(e))
 
     results["Seeds"] = pd.to_numeric(results["Seeds"], downcast="integer")
     results.sort_values(["Seeds", "Age"], axis=0, ascending=[False, False], inplace=True)
@@ -60,7 +104,7 @@ def getResults(query, selector):
 
 
 def parseResult(site, tag):
-    result = 0
+    result = None
     if site == "EZTV":
         result = {
             "Title": tag.contents[3].a.text,
@@ -128,77 +172,35 @@ def finder(query, selector):
     return results
 
 
-app = Flask(__name__)
-app.secret_key = "this_is_a_secret_key"
-logging.basicConfig(filename="Flask.log", format="%(asctime)s %(message)s", datefmt="%d/%m/%Y %H:%M:%S")
-logger = logging.getLogger()
-
-torUserName = os.environ["username"]
-torPassword = os.environ["password"]
-torIP = os.environ["qbittorrent_ip"]
-torPort = os.environ["qbittorrent_port"]
-torAddress = "http://" + torIP + ":" + torPort
-
-
-class QBittorrentAPI:
-    def __init__(self, base_url, username, password):
-        self.base_url = base_url
-        self.username = username
-        self.password = password
-        try:
-            self.qb = Client(host=base_url, username=username, password=password)
-            self.qb.auth_log_in()
-        except Exception as e:
-            logger.error(str(e))
-
-    def get_list(self):
-        try:
-            torrents = None
-            torrents = self.qb.torrents_info()
-
-        except Exception as e:
-            logger.error(str(e))
-
-        return torrents
-
-    def add_new(self, magnet_link):
-        try:
-            new_torrent = self.qb.torrents_add(urls=magnet_link)
-        except Exception as e:
-            logger.error(str(e))
-
-
-class Storage:
-    def __init__(self):
-        self.results = None
-
-
 @app.route("/", methods=["GET", "POST"])
 def home():
-    if request.method == "POST":
-        data = request.get_json()
-        if "choice" in data:
-            try:
-                choice_dl = int(data["choice"])
-                qbit = QBittorrentAPI(torAddress, torUserName, torPassword)
-                qbit.add_new(store.results["Magnet"].loc[choice_dl])
-            except Exception as e:
-                logger.error(str(e) + traceback.format_exc())
-            return data
-        else:
-            searchText = data["input"]
-            searchEngine = data["engine"]
-            store.results = finder(searchText, searchEngine)
-            choppedResults = store.results[["Title", "Age", "Size", "Seeds"]]
-            newTableHMTL = choppedResults.to_html(classes="tableStyle", table_id="resultsTable", header="true", justify="center")
-            return {"table": newTableHMTL}
+    return render_template("base.html")
+
+
+@app.route("/search", methods=["POST"])
+def search():
+    data = request.get_json()
+    searchText = data["input"]
+    searchEngine = data["engine"]
+    qbit.results = finder(searchText, searchEngine)
+    choppedResults = qbit.results[["Title", "Age", "Size", "Seeds"]]
+    newTableHMTL = choppedResults.to_html(classes="tableStyle", table_id="resultsTable", header="true", justify="center")
+    return {"table": newTableHMTL}
+
+
+@app.route("/send_magnet", methods=["POST"])
+def send_magnet():
+    data = request.get_json()
+    try:
+        dl_choice = int(data["choice"])
+        qbit.connect()
+        qbit.add_new(dl_choice)
+    except Exception as e:
+        logger.error(str(e))
+        return {"Status": "Error: " + str(e)}
     else:
-        if request.is_json:
-            data = request.get_json()
-        else:
-            return render_template("base.html")
+        return {"Status": "Success: Magnet Added"}
 
 
 if __name__ == "__main__":
-    store = Storage()
     app.run(host="0.0.0.0", port=5000)
