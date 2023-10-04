@@ -4,7 +4,7 @@ import sys
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, render_template, request
 from qbittorrentapi import Client
 
 
@@ -46,14 +46,20 @@ class QBittorrentAPI:
 
 app = Flask(__name__)
 app.secret_key = "secret_key"
+
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(message)s", datefmt="%d/%m/%Y %H:%M:%S", handlers=[logging.StreamHandler(sys.stdout)])
 logger = logging.getLogger()
 
-torUserName = os.environ["torrenter_username"]
-torPassword = os.environ["torrenter_password"]
-torIP = os.environ["torrenter_ip"]
-torPort = os.environ["torrenter_port"]
-torAddress = "http://" + torIP + ":" + torPort
+try:
+    torUserName = os.environ["torrenter_username"]
+    torPassword = os.environ["torrenter_password"]
+    torIP = os.environ["torrenter_ip"]
+    torPort = os.environ["torrenter_port"]
+    torAddress = "http://" + torIP + ":" + torPort
+except:
+    torUserName = "pi"
+    torPassword = "raspberry"
+    torAddress = "http://192.168.1.2:5678"
 
 qbit = QBittorrentAPI(torAddress, torUserName, torPassword)
 
@@ -107,21 +113,36 @@ def getResults(query, selector):
 
 def parseResult(site, tag):
     result = None
+    title = None
+    magnet = None
+    size = None
+    age = None
+    seeds = None
     if site == "EZTV":
+        title = tag.contents[3].a.text
+        magnet = tag.contents[5].find_all(class_="magnet")[0]["href"]
+        age = tag.contents[9].text
+        size = tag.contents[7].text
+        seeds = int(tag.contents[11].text.replace(",", "").replace("-", "0"))
+
         result = {
-            "Title": tag.contents[3].a.text,
-            "Magnet": tag.contents[5].find_all(class_="magnet")[0]["href"],
-            "Size": tag.contents[7].text,
-            "Age": tag.contents[9].text,
-            "Seeds": int(tag.contents[11].text.replace(",", "").replace("-", "0")),
+            "Title": title,
+            "Magnet": magnet,
+            "Size": size,
+            "Age": age,
+            "Seeds": seeds,
         }
 
     elif site == "1377X":
+        title = tag.contents[1].text[1:]
+        size = tag.contents[9].text
+        age = tag.contents[7].text
+        seeds = int(tag.contents[3].text.replace(",", "").replace("-", "0"))
         result = {
-            "Title": tag.contents[1].text[1:],
-            "Size": tag.contents[9].text,
-            "Age": tag.contents[7].text,
-            "Seeds": int(tag.contents[3].text.replace(",", "").replace("-", "0")),
+            "Title": title,
+            "Size": size,
+            "Age": age,
+            "Seeds": seeds,
         }
 
         # Open and parse search links
@@ -137,20 +158,42 @@ def parseResult(site, tag):
         result["Magnet"] = magnet_str
 
     elif site == "PB":
+        title = tag.contents[3].contents[1].text[:-1]
+        magnet = tag.contents[3].contents[3]["href"]
+
+        try:
+            size = tag.contents[3].contents[7].text.split(",")[1].replace("\xa0", " ")[6:]
+        except:
+            size = tag.contents[3].contents[6].text.split(",")[1].replace("\xa0", " ")[6:]
+
+        try:
+            age = tag.contents[3].contents[7].text.split(",")[0].replace("\xa0", " ").split("Uploaded")[1][1:]
+        except:
+            age = tag.contents[3].contents[6].text.split(",")[0].replace("\xa0", " ").split("Uploaded")[1][1:]
+
+        try:
+            seeds = int(tag.contents[5].text.replace(",", "").replace("-", "0"))
+        except:
+            seeds = int(tag.contents[5].text.replace(",", "").replace("-", "0"))
+
         result = {
-            "Title": tag.contents[3].contents[1].text[:-1],
-            "Magnet": tag.contents[3].contents[3]["href"],
-            "Size": tag.contents[3].contents[7].text.split(",")[1].replace("\xa0", " ")[6:],
-            "Age": tag.contents[3].contents[7].text.split(",")[0].replace("\xa0", " ").split("Uploaded")[1][1:],
-            "Seeds": int(tag.contents[5].text.replace(",", "").replace("-", "0")),
+            "Title": title,
+            "Magnet": magnet,
+            "Size": size,
+            "Age": age,
+            "Seeds": seeds,
         }
 
     elif site == "OLD":
+        title = tag.contents[3].text[:-2]
+        size = tag.contents[9].text
+        age = tag.contents[5].text
+        seeds = int(tag.contents[11].text.replace(",", "").replace("-", "0"))
         result = {
-            "Title": tag.contents[3].text[:-2],
-            "Size": tag.contents[9].text,
-            "Age": tag.contents[5].text,
-            "Seeds": int(tag.contents[11].text.replace(",", "").replace("-", "0")),
+            "Title": title,
+            "Size": size,
+            "Age": age,
+            "Seeds": seeds,
         }
 
         selectedBaseSite = [element for element in sites if element["name"] == site][0]
@@ -202,3 +245,7 @@ def send_magnet():
         return {"Status": "Error: " + str(e)}
     else:
         return {"Status": "Success: Magnet Added"}
+
+
+if __name__ == "__main__":
+    app.run("0.0.0.0", port=5000)
