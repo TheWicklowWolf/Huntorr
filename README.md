@@ -36,5 +36,7 @@ services:
 https://github.com/TheWicklowWolf/Huntorr/assets/111055425/c3984c80-3abb-4333-accc-36760117c5c7
 
 
+---
 
+https://hub.docker.com/r/thewicklowwolf/huntorr
 
