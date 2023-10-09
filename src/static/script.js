@@ -9,7 +9,16 @@ var RadioPB = document.getElementById('RadioPB');
 var selectionGroup = document.getElementById('selectionGroup');
 var engineText = "";
 
-searchButton.addEventListener('click', function () {
+searchText.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        performSearch();
+    }
+});
+
+searchButton.addEventListener('click', performSearch);
+
+function performSearch() {
     // Disable Buttons
     searchButton.disabled = true;
     searchText.disabled = true;
@@ -71,10 +80,19 @@ searchButton.addEventListener('click', function () {
         .catch(function (error) {
             console.log(error);
         });
+}
 
+choiceNo.addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+        performChoice();
+    }
 });
 
-choiceButton.addEventListener('click', function () {
+choiceButton.addEventListener('click', performChoice);
+
+
+function performChoice() {
     if (choiceNo.value.length == 0 || isNaN(choiceNo.value) || choiceNo.value < 0) {
         alert("Incorrect Entry\nEnter a number to download");
     }
@@ -108,4 +126,4 @@ choiceButton.addEventListener('click', function () {
                 console.log(error);
             });
     }
-});
+}
