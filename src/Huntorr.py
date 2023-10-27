@@ -229,7 +229,7 @@ def search():
     searchEngine = data["engine"]
     qbit.results = finder(searchText, searchEngine)
     choppedResults = qbit.results[["Title", "Age", "Size", "Seeds"]]
-    newTableHMTL = choppedResults.to_html(classes="tableStyle", table_id="resultsTable", header="true", justify="center")
+    newTableHMTL = choppedResults.to_html(classes="tableStyle table table-hover table-striped table-bordered", table_id="resultsTable", header="true", justify="center")
     return {"table": newTableHMTL}
 
 

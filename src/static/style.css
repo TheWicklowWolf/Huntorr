@@ -1,45 +1,21 @@
-
 body {
     margin: 0;
     padding: 0;
 }
 
-.topBar {
-    background-color: #333;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    padding: 10px 100px 10px 20px;
+#logo{
+    max-width: 45px;
+    max-height: 45px;
+    padding: 5px;
 }
 
-.logo {
-    max-width: 60px;
-    margin-right: 0px;
-}
-
-.title {
-    margin: 0;
-    font-size: 50px;
-    flex-grow: 1;
-    text-align: center;
+#inputBox{
+    width: 60%!important;
 }
 
 .container {
     display: flex;
-}
-
-.leftDiv,
-.rightDiv {
-    width: 20%;
-    background-color: transparent;
-}
-
-.centeredDiv {
-    width: 60%;    
-    background-color: #f0f0f0;
-    text-align: center;
-    padding: 20px;
-    margin: 0 auto;
+    max-width: 90%!important;
 }
 
 .radios .form-check-inline {
@@ -67,56 +43,41 @@ body {
     font-size: 11pt;
     font-family: Arial;
     border-collapse: collapse;
-    border: 1px solid silver;
     table-layout: auto;
 }
 
+.tableStyle td{
+    word-break: break-all;
+    white-space: normal;
+}
 .tableStyle td,
 th {
     padding: 10px;
 }
 
-.tableStyle tr:nth-child(even) {
-    background: #E0E0E0;
-}
-
-.tableStyle tr:hover {
-    background: silver;
-    cursor: pointer;
-}
-
 @media screen and (max-width: 600px) {
-    .leftDiv,
-    .rightDiv {
-        width: 1%;
-        background-color: transparent;
+    h1{
+        margin-bottom: 0.1rem!important;
     }
-    .centeredDiv {
-        width: 98%;
+    #inputBox{
+        width: 90%!important;
     }
-
+    .container {
+        width: 98%!important;
+    }
     .radios .form-check-inline {
         margin-right: 20px;
     }
-
     #tableDiv{
-        margin: 5px;
+        margin: 5px!important;
+        padding: 5px!important;
     }
-
     .tableStyle {
         font-size: 8px;
         max-width: 100%;
     }
-
     .tableStyle td, th {
-    padding: 6px;
-    }
-
-    th,
-    td {
-        padding: 2.5px 1px;
-        text-align: left;
-        text-wrap: balance;
-        word-wrap: break-word;
+    padding: 2.5px 1px;
+    text-align: left;
     }
 }
