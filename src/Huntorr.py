@@ -242,7 +242,7 @@ def send_magnet():
         qbit.add_new(dl_choice)
     except Exception as e:
         logger.error(str(e))
-        return {"Status": "Error: " + str(e)}
+        return {"Status": "Error: Failed to add magnet - Check Logs"}
     else:
         return {"Status": "Success: Magnet Added"}
 
