@@ -65,8 +65,11 @@ th {
     .container {
         width: 98%!important;
     }
+    .radios{
+        margin:10px 0px 10px 0px;
+    }
     .radios .form-check-inline {
-        margin-right: 20px;
+        margin: 0px 9px 0px 9px;
     }
     #tableDiv{
         margin: 5px!important;
