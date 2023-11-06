@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='logo.png')}}">
+  <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <!-- Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.min.js"
+    integrity="sha512-WW8/jxkELe2CAiE4LvQfwm1rajOS8PHasCCx+knHG0gBHt8EXxS6T6tJRTGuDQVnluuAvMxWF4j8SNFDKceLFg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <title>Huntorr</title>
+</head>
+
+<body class="bg-light-subtle">
+  <div class="container-fluid bg-dark">
+    <div class="top-bar d-flex justify-content-between align-items-center">
+      <img id="logo" src="{{url_for('static',filename='logo.png')}}">
+      <h1 class="title text-center text-light flex-grow-1">Huntorr</h1>
+      <div class="d-flex justify-content-between align-items-center">
+        <i class="fa fa-sun"></i>
+        <div class="form-check form-switch mx-2">
+          <input class="form-check-input rounded" type="checkbox" id="themeSwitch">
+        </div>
+        <i class="fa fa-moon"></i>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="inputBox" class="container-fluid justify-content-between align-items-cente bg-secondary-subtle p-4 rounded">
+    <div class="centeredDiv">
+      <div class="input-group">
+        <input id="searchText" type="text" class="form-control" placeholder="Enter Search Item"
+          aria-label="Enter Search Item">
+        <div class="input-group-append">
+          <button id="searchButton" class="btn btn-primary" type="button">Search</button>
+        </div>
+      </div>
+      <div class="radios d-flex justify-content-center">
+        <div class="form-check form-check-inline">
+          <input name="radio" class="form-check-input" type="radio" id="Radio1377X" value="1377X">
+          <label class="form-check-label" for="Radio1377X">1337x</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input name="radio" class="form-check-input" type="radio" id="RadioEZTV" value="RadioEZTV">
+          <label class="form-check-label" for="RadioEZTV">EZTV</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input name="radio" class="form-check-input" type="radio" id="RadioPB" checked="checked" value="RadioPB">
+          <label class="form-check-label" for="RadioPB">Pirate Bay</label>
+        </div>
+      </div>
+      <div class="input-group" id="selectionGroup">
+        <input id="choiceNo" type="text" class="form-control" placeholder="Enter Choice Number"
+          aria-label="Enter Choice Number Here">
+        <div class="input-group-append">
+          <button id="choiceButton" class="btn btn-primary" type="button">Download</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-center rounded mx-5 p-2" id="tableDiv">
+  </div>
+  <script src="{{url_for('static',filename='script.js')}}"></script>
+</body>
+
+</html>
