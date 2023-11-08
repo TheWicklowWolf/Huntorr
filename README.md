@@ -38,5 +38,9 @@ https://github.com/TheWicklowWolf/Huntorr/assets/111055425/c3984c80-3abb-4333-ac
 
 ---
 
+
+![Huntorr](https://github.com/TheWicklowWolf/Huntorr/assets/111055425/a3ab3f53-6857-42a4-995f-fbada2718fd3)
+
+
 https://hub.docker.com/r/thewicklowwolf/huntorr
 
