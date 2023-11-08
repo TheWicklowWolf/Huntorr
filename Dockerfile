@@ -1,4 +1,4 @@
-FROM python:3.12-alpine
+FROM python:3.11-alpine
 COPY . /huntorr
 WORKDIR /huntorr
 ENV PYTHONPATH /usr/lib/python3.11/site-packages
