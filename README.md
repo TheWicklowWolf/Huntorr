@@ -29,18 +29,14 @@ services:
     restart: unless-stopped
 ```
 
-
 ---
 
-
-https://github.com/TheWicklowWolf/Huntorr/assets/111055425/c3984c80-3abb-4333-accc-36760117c5c7
-
+![Huntorr_Light](https://github.com/TheWicklowWolf/Huntorr/assets/111055425/6c852963-7bb7-4eca-b5c2-65becb2e7fd2)
 
 ---
-
 
 ![Huntorr](https://github.com/TheWicklowWolf/Huntorr/assets/111055425/a3ab3f53-6857-42a4-995f-fbada2718fd3)
 
+---
 
 https://hub.docker.com/r/thewicklowwolf/huntorr
-
