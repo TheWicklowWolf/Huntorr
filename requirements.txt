@@ -1,6 +1,3 @@
-cython
-numpy
-pandas
 gunicorn
 requests
 beautifulsoup4
