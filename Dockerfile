@@ -1,4 +1,5 @@
 FROM python:3.12-alpine
+RUN apk add --no-cache gcc musl-dev linux-headers
 COPY . /huntorr
 WORKDIR /huntorr
 ENV PYTHONPATH /usr/lib/python3.12/site-packages
