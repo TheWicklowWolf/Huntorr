@@ -1,11 +1,8 @@
 ![Build Status](https://github.com/TheWicklowWolf/Huntorr/actions/workflows/main.yml/badge.svg)
 ![Docker Pulls](https://img.shields.io/docker/pulls/thewicklowwolf/huntorr.svg)
 
-<p align="center">
-  
+ 
 ![huntorr](https://github.com/TheWicklowWolf/Huntorr/assets/111055425/792f991c-b202-436c-a6d9-4f8244e24c17)
-
-</p>
 
 
 Web GUI for manually finding torrents and adding them to qBittorrent.
@@ -24,8 +21,8 @@ services:
       - torrenter_password=raspberry
       - torrenter_ip=192.168.1.123
       - torrenter_port=5002
-      - media_server_addresses="Plex:http://192.168.1.123:32400, Jellyfin:http://192.168.1.123:8096"
-      - media_server_tokens="Plex:abc, Jellyfin:def"
+      - media_server_addresses=Plex:http://192.168.1.123:32400, Jellyfin:http://192.168.1.123:8096
+      - media_server_tokens=Plex:abc, Jellyfin:def
       - media_server_library_name=Movies
     ports:
       - 5000:5000
