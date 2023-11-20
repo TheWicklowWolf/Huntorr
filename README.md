@@ -26,7 +26,7 @@ services:
       - torrenter_port=5002
       - media_server_addresses="Plex:http://192.168.1.123:32400, Jellyfin:http://192.168.1.123:8096"
       - media_server_tokens="Plex:abc, Jellyfin:def"
-      - media_server_library_name=UFC
+      - media_server_library_name=Movies
     ports:
       - 5000:5000
     restart: unless-stopped
