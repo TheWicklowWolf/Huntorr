@@ -24,6 +24,9 @@ services:
       - torrenter_password=raspberry
       - torrenter_ip=192.168.1.123
       - torrenter_port=5002
+      - media_server_addresses="Plex:http://192.168.1.123:32400, Jellyfin:http://192.168.1.123:8096"
+      - media_server_tokens="Plex:abc, Jellyfin:def"
+      - media_server_library_name=UFC
     ports:
       - 5000:5000
     restart: unless-stopped

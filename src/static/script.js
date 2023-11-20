@@ -1,3 +1,8 @@
+var config_modal = document.getElementById('config-modal');
+var save_message = document.getElementById("save-message");
+var save_changes_button = document.getElementById("save-changes-button");
+var sync_message = document.getElementById("sync-message");
+var sync_button = document.getElementById("sync-button");
 var searchButton = document.getElementById('searchButton');
 var searchText = document.getElementById('searchText');
 var choiceButton = document.getElementById("choiceButton");
@@ -7,7 +12,10 @@ var Radio1377X = document.getElementById('Radio1377X');
 var RadioEZTV = document.getElementById('RadioEZTV');
 var RadioPB = document.getElementById('RadioPB');
 var selectionGroup = document.getElementById('selectionGroup');
-var engineText = "";
+var media_server_addresses = document.getElementById("media_server_addresses");
+var media_server_tokens = document.getElementById("media_server_tokens");
+var media_server_library_name = document.getElementById("media_server_library_name");
+var engineText = "PB";
 
 searchText.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
@@ -19,7 +27,6 @@ searchText.addEventListener('keydown', function (event) {
 searchButton.addEventListener('click', performSearch);
 
 function performSearch() {
-    // Disable Buttons
     searchButton.disabled = true;
     searchText.disabled = true;
     choiceButton.disabled = true;
@@ -27,7 +34,6 @@ function performSearch() {
     Radio1377X.disabled = true;
     RadioEZTV.disabled = true;
     RadioPB.disabled = true;
-    // Get selected radio button
     if (Radio1377X.checked) {
         engineText = '1377X';
     }
@@ -68,7 +74,6 @@ function performSearch() {
             else {
                 throw Error('Something went wrong');
             }
-            // Enable Buttons
             searchButton.disabled = false;
             searchText.disabled = false;
             choiceButton.disabled = false;
@@ -127,6 +132,83 @@ function performChoice() {
             });
     }
 }
+
+config_modal.addEventListener('show.bs.modal', function (event) {
+    fetch('/load_settings', {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'GET'
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            media_server_addresses.value = data.media_server_addresses;
+            media_server_tokens.value = data.media_server_tokens;
+            media_server_library_name.value = data.media_server_library_name;
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+});
+
+save_changes_button.addEventListener("click", () => {
+    fetch('/save_settings', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            "media_server_addresses": media_server_addresses.value,
+            "media_server_tokens": media_server_tokens.value,
+            "media_server_library_name": media_server_library_name.value,
+        }),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            save_message.style.display = "block";
+            setTimeout(function () {
+                save_message.style.display = "none";
+            }, 1500);
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+});
+
+sync_button.addEventListener("click", () => {
+    fetch('/refresh_media_server', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            sync_message.style.display = "block";
+            sync_message.textContent = data.Status;
+            setTimeout(function () {
+                sync_message.style.display = "none";
+            }, 3000);
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+        });
+});
 
 const themeSwitch = document.getElementById('themeSwitch');
 const savedTheme = localStorage.getItem('theme');
