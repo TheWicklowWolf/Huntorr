@@ -67,7 +67,7 @@ class Data_Handler:
 
         h = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"}
         url = search_url + query.replace(" ", q_s_r) + search_url_suffix
-        req = requests.get(search_url + query.replace(" ", q_s_r) + search_url_suffix, headers=h)
+        req = requests.get(url, headers=h)
         c = req.content
         soup = BeautifulSoup(c, "lxml")
 

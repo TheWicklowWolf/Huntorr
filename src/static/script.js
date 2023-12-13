@@ -120,7 +120,7 @@ function performChoice() {
                             setTimeout(function () {
                                 choiceNo.value = "Enter Choice Number";
                                 choiceNo.style.color = '';
-                            }, 3000);
+                            }, 1500);
                         });
                 }
                 else {
