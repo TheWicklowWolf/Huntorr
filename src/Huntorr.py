@@ -52,7 +52,7 @@ class Data_Handler:
         self.media_server_library_name = media_server_library_name
         self.sites = [
             {"name": "1377X", "base_url": "https://1377x.to", "search_url": "https://1377x.to/search/", "query_space_replace": "%20", "search_url_suffix": "/1/"},
-            {"name": "EZTV", "base_url": "https://eztv.ag", "search_url": "https://eztv.ag/search/", "query_space_replace": "-", "search_url_suffix": ""},
+            {"name": "EZTV", "base_url": "https://eztvx.to/", "search_url": "https://eztvx.to/search/", "query_space_replace": "-", "search_url_suffix": ""},
             {"name": "PB", "base_url": "https://thepiratebay0.org", "search_url": "https://thepiratebay0.org/search/", "query_space_replace": "%20", "search_url_suffix": "/1/99/0"},
             {"name": "OLD", "base_url": "https://www1.thepiratebay3.to", "search_url": "https://www1.thepiratebay3.to/s/?q=", "query_space_replace": "+", "search_url_suffix": ""},
         ]
@@ -67,9 +67,14 @@ class Data_Handler:
 
         h = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"}
         url = search_url + query.replace(" ", q_s_r) + search_url_suffix
-        req = requests.get(url, headers=h)
-        c = req.content
-        soup = BeautifulSoup(c, "lxml")
+
+        if site == self.sites[1]["name"]:
+            form_data = {"layout": "def_wlinks", "q_search_tv_packs_only": "off"}
+            response = requests.post(url, headers=h, data=form_data)
+            soup = BeautifulSoup(response.content, "lxml")
+        else:
+            response = requests.get(url, headers=h)
+            soup = BeautifulSoup(response.content, "lxml")
 
         if site == self.sites[0]["name"]:
             tags = soup.find_all("tr")[1:]
