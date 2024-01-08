@@ -37,7 +37,7 @@ class QBittorrentAPI:
     def add_new(self, dl_choice):
         try:
             magnet_link = self.results["Magnet"].loc[dl_choice]
-            new_torrent = self.qb.torrents_add(urls=magnet_link, category="huntorr", use_auto_torrent_management=True, save_path="huntorr", seeding_time_limit=60, is_first_last_piece_priority=True)
+            new_torrent = self.qb.torrents_add(urls=magnet_link, category="huntorr", use_auto_torrent_management=True, save_path="huntorr", seeding_time_limit=300, is_first_last_piece_priority=True)
             if new_torrent == "Fails.":
                 raise Exception("Failed to add torrent")
 
@@ -68,21 +68,14 @@ class Data_Handler:
         h = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"}
         url = search_url + query.replace(" ", q_s_r) + search_url_suffix
 
-        if site == self.sites[1]["name"]:
+        if site == "EZTV":
             form_data = {"layout": "def_wlinks", "q_search_tv_packs_only": "off"}
             response = requests.post(url, headers=h, data=form_data)
             soup = BeautifulSoup(response.content, "lxml")
+            tags = soup.find_all("tr", class_="forum_header_border")
         else:
             response = requests.get(url, headers=h)
             soup = BeautifulSoup(response.content, "lxml")
-
-        if site == self.sites[0]["name"]:
-            tags = soup.find_all("tr")[1:]
-        elif site == self.sites[1]["name"]:
-            tags = soup.find_all("tr", class_="forum_header_border")
-        elif site == self.sites[2]["name"]:
-            tags = soup.find_all("tr")[1:]
-        elif site == self.sites[3]["name"]:
             tags = soup.find_all("tr")[1:]
 
         for tag in tags:
