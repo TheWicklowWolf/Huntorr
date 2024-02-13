@@ -37,7 +37,7 @@ class QBittorrentAPI:
     def add_new(self, dl_choice):
         try:
             magnet_link = self.results["Magnet"].loc[dl_choice]
-            new_torrent = self.qb.torrents_add(urls=magnet_link, category="huntorr", use_auto_torrent_management=True, save_path="huntorr", seeding_time_limit=300, is_first_last_piece_priority=True)
+            new_torrent = self.qb.torrents_add(urls=magnet_link, category="huntorr", use_auto_torrent_management=True, save_path="huntorr", seeding_time_limit=1440, is_first_last_piece_priority=True)
             if new_torrent == "Fails.":
                 raise Exception("Failed to add torrent")
 
