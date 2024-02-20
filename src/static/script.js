@@ -16,6 +16,7 @@ var media_server_addresses = document.getElementById("media_server_addresses");
 var media_server_tokens = document.getElementById("media_server_tokens");
 var media_server_library_name = document.getElementById("media_server_library_name");
 var engineText = "PB";
+var timer = null;
 
 searchText.addEventListener('keydown', function (event) {
     if (event.key === 'Enter') {
@@ -67,7 +68,10 @@ function performSearch() {
                             var selectedRow = e.target.parentElement.rowIndex - 1;
                             if (selectedRow >= 0 && !isNaN(selectedRow)) {
                                 choiceNo.value = selectedRow;
-                                clearTimeout(timer);
+                                if (timer) {
+                                    clearTimeout(timer);
+                                    timer = null;
+                                }
                             }
                         });
                     });
@@ -118,7 +122,7 @@ function performChoice() {
                             choiceButton.disabled = false;
                             choiceNo.style.color = 'blue';
                             choiceNo.value = response.Status;
-                            var timer = setTimeout(function () {
+                            timer = setTimeout(function () {
                                 choiceNo.value = "Enter Choice Number";
                                 choiceNo.style.color = '';
                             }, 3000);
