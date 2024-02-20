@@ -51,7 +51,7 @@ class Data_Handler:
         self.media_server_tokens = media_server_tokens
         self.media_server_library_name = media_server_library_name
         self.sites = [
-            {"name": "1377X", "base_url": "https://1377x.to", "search_url": "https://1377x.to/search/", "query_space_replace": "+", "search_url_suffix": "/1/"},
+            {"name": "1377X", "base_url": "https://1337x.to", "search_url": "https://1337x.to/search/", "query_space_replace": "+", "search_url_suffix": "/1/"},
             {"name": "EZTV", "base_url": "https://eztvx.to/", "search_url": "https://eztvx.to/search/", "query_space_replace": "-", "search_url_suffix": ""},
             {"name": "PB", "base_url": "https://thepiratebay0.org", "search_url": "https://thepiratebay0.org/search/", "query_space_replace": "%20", "search_url_suffix": "/1/99/0"},
             {"name": "OLD", "base_url": "https://www1.thepiratebay3.to", "search_url": "https://www1.thepiratebay3.to/s/?q=", "query_space_replace": "+", "search_url_suffix": ""},
