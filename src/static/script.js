@@ -67,6 +67,7 @@ function performSearch() {
                             var selectedRow = e.target.parentElement.rowIndex - 1;
                             if (selectedRow >= 0 && !isNaN(selectedRow)) {
                                 choiceNo.value = selectedRow;
+                                clearTimeout(timer);
                             }
                         });
                     });
@@ -117,10 +118,10 @@ function performChoice() {
                             choiceButton.disabled = false;
                             choiceNo.style.color = 'blue';
                             choiceNo.value = response.Status;
-                            setTimeout(function () {
+                            var timer = setTimeout(function () {
                                 choiceNo.value = "Enter Choice Number";
                                 choiceNo.style.color = '';
-                            }, 1500);
+                            }, 3000);
                         });
                 }
                 else {
