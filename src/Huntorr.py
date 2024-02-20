@@ -51,10 +51,11 @@ class Data_Handler:
         self.media_server_tokens = media_server_tokens
         self.media_server_library_name = media_server_library_name
         self.sites = [
-            {"name": "1377X", "base_url": "https://1337x.to", "search_url": "https://1337x.to/search/", "query_space_replace": "+", "search_url_suffix": "/1/"},
+            {"name": "1337X", "base_url": "https://1337x.to", "search_url": "https://1337x.to/search/", "query_space_replace": "+", "search_url_suffix": "/1/"},
             {"name": "EZTV", "base_url": "https://eztvx.to/", "search_url": "https://eztvx.to/search/", "query_space_replace": "-", "search_url_suffix": ""},
             {"name": "PB", "base_url": "https://thepiratebay0.org", "search_url": "https://thepiratebay0.org/search/", "query_space_replace": "%20", "search_url_suffix": "/1/99/0"},
-            {"name": "OLD", "base_url": "https://www1.thepiratebay3.to", "search_url": "https://www1.thepiratebay3.to/s/?q=", "query_space_replace": "+", "search_url_suffix": ""},
+            {"name": "OLD1", "base_url": "https://www1.thepiratebay3.to", "search_url": "https://www1.thepiratebay3.to/s/?q=", "query_space_replace": "+", "search_url_suffix": ""},
+            {"name": "OLD2", "base_url": "https://1377x.to", "search_url": "https://1377x.to/search/", "query_space_replace": "+", "search_url_suffix": "/1/"},
         ]
 
     def getResults(self, query, selector):
@@ -73,6 +74,25 @@ class Data_Handler:
             response = requests.post(url, headers=h, data=form_data)
             soup = BeautifulSoup(response.content, "lxml")
             tags = soup.find_all("tr", class_="forum_header_border")
+
+        elif site == "1337X":
+            try:
+                flare_solverr_url = f"http://{torIP}:8191/v1"
+                flare_solverr_data = {"cmd": "request.get", "url": url, "maxTimeout": 60000}
+                flare_solverr_headers = {"Content-Type": "application/json"}
+                flare_solverr_response = requests.post(flare_solverr_url, headers=flare_solverr_headers, json=flare_solverr_data)
+
+                if flare_solverr_response.status_code == 200:
+                    soup = BeautifulSoup(flare_solverr_response.content, "lxml")
+                    tags = soup.find_all("tr")[1:]
+                else:
+                    raise Exception("FlareSolverr failed, falling back to regular request")
+            except Exception as e:
+                logger.error(f"Error using FlareSolverr: {str(e)}")
+                response = requests.get(url, headers=h)
+                soup = BeautifulSoup(response.content, "lxml")
+                tags = soup.find_all("tr")[1:]
+
         else:
             response = requests.get(url, headers=h)
             soup = BeautifulSoup(response.content, "lxml")
@@ -116,7 +136,7 @@ class Data_Handler:
                 "Seeds": seeds,
             }
 
-        elif site == "1377X":
+        elif site == "1337X":
             title = tag.contents[1].text[1:]
             size = tag.contents[9].text
             age = tag.contents[7].text

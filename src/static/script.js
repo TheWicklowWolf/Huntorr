@@ -8,7 +8,7 @@ var searchText = document.getElementById('searchText');
 var choiceButton = document.getElementById("choiceButton");
 var choiceNo = document.getElementById("choiceNo");
 var tableDiv = document.getElementById('tableDiv');
-var Radio1377X = document.getElementById('Radio1377X');
+var Radio1337X = document.getElementById('Radio1337X');
 var RadioEZTV = document.getElementById('RadioEZTV');
 var RadioPB = document.getElementById('RadioPB');
 var selectionGroup = document.getElementById('selectionGroup');
@@ -31,11 +31,11 @@ function performSearch() {
     searchText.disabled = true;
     choiceButton.disabled = true;
     choiceNo.disabled = true;
-    Radio1377X.disabled = true;
+    Radio1337X.disabled = true;
     RadioEZTV.disabled = true;
     RadioPB.disabled = true;
-    if (Radio1377X.checked) {
-        engineText = '1377X';
+    if (Radio1337X.checked) {
+        engineText = '1337X';
     }
     else if (RadioEZTV.checked) {
         engineText = 'EZTV';
@@ -78,7 +78,7 @@ function performSearch() {
             searchText.disabled = false;
             choiceButton.disabled = false;
             choiceNo.disabled = false;
-            Radio1377X.disabled = false;
+            Radio1337X.disabled = false;
             RadioEZTV.disabled = false;
             RadioPB.disabled = false;
         })
