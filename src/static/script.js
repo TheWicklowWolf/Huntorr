@@ -70,6 +70,7 @@ function performSearch() {
                                 choiceNo.value = selectedRow;
                                 if (timer) {
                                     clearTimeout(timer);
+                                    choiceNo.style.color = '';
                                     timer = null;
                                 }
                             }
