@@ -137,7 +137,7 @@ class Data_Handler:
             }
 
         elif site == "1337X":
-            title = tag.contents[1].text[1:]
+            title = tag.contents[1].text
             size = tag.contents[9].text
             age = tag.contents[7].text
             seeds = int(tag.contents[3].text.replace(",", "").replace("-", "0"))
