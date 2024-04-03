@@ -37,6 +37,8 @@ class QBittorrentAPI:
     def add_new(self, dl_choice):
         try:
             magnet_link = self.results["Magnet"].loc[dl_choice]
+            if not magnet_link:
+                raise Exception("No Magnet Link")
             new_torrent = self.qb.torrents_add(urls=magnet_link, category="huntorr", use_auto_torrent_management=True, save_path="huntorr", seeding_time_limit=1440, is_first_last_piece_priority=True)
             if new_torrent == "Fails.":
                 raise Exception("Failed to add torrent")
@@ -45,7 +47,7 @@ class QBittorrentAPI:
             logger.error(str(e))
 
 
-class Data_Handler:
+class DataHandler:
     def __init__(self, media_server_addresses, media_server_tokens, media_server_library_name):
         self.media_server_addresses = media_server_addresses
         self.media_server_tokens = media_server_tokens
@@ -152,7 +154,8 @@ class Data_Handler:
             selectedBaseSite = [element for element in self.sites if element["name"] == site][0]
             base_url = selectedBaseSite["base_url"]
             h = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36"}
-            download_url = tag.contents[1].find_all("a")[1]["href"]
+            raw_download_url = tag.contents[1].find_all("a")[1]["href"]
+            download_url = raw_download_url[raw_download_url.find("/") : raw_download_url.rfind("/") + 1]
             req_tmp = requests.get(base_url + download_url, headers=h)
             c_tmp = req_tmp.content
             soup_tmp = BeautifulSoup(c_tmp, "lxml")
@@ -284,8 +287,8 @@ app.secret_key = "secret_key"
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(message)s", datefmt="%d/%m/%Y %H:%M:%S", handlers=[logging.StreamHandler(sys.stdout)])
 logger = logging.getLogger()
 
-torUserName = os.environ.get("torrenter_username", "pi")
-torPassword = os.environ.get("torrenter_password", "raspberry")
+torUserName = os.environ.get("torrenter_username", "user")
+torPassword = os.environ.get("torrenter_password", "password")
 torIP = os.environ.get("torrenter_ip", "192.168.1.2")
 torPort = os.environ.get("torrenter_port", "5678")
 torAddress = "http://" + torIP + ":" + torPort
@@ -294,7 +297,7 @@ qbit = QBittorrentAPI(torAddress, torUserName, torPassword)
 media_server_addresses = os.environ.get("media_server_addresses", "Plex: http://192.168.1.2:32400, Jellyfin: http://192.168.1.2:8096")
 media_server_tokens = os.environ.get("media_server_tokens", "Plex: abc, Jellyfin: xyz")
 media_server_library_name = os.environ.get("media_server_library_name", "Movies")
-data_handler = Data_Handler(media_server_addresses, media_server_tokens, media_server_library_name)
+data_handler = DataHandler(media_server_addresses, media_server_tokens, media_server_library_name)
 
 
 @app.route("/", methods=["GET", "POST"])
