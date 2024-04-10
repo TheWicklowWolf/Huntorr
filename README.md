@@ -11,7 +11,6 @@ Web GUI for manually finding torrents and adding them to qBittorrent.
 ## Run using docker-compose
 
 ```yaml
-version: "2.1"
 services:
   huntorr:
     image: thewicklowwolf/huntorr:latest
