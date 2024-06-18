@@ -139,8 +139,14 @@ class DataHandler:
             }
 
         elif site == "1337X":
-            title = tag.contents[1].text
-            size = tag.contents[9].text
+            try:
+                title = tag.contents[1].find_all("a")[1].text
+            except:
+                title = tag.contents[1].text
+            try:
+                size = tag.contents[9].next
+            except:
+                size = tag.contents[9].text
             age = tag.contents[7].text
             seeds = int(tag.contents[3].text.replace(",", "").replace("-", "0"))
             result = {
