@@ -293,6 +293,12 @@ app.secret_key = "secret_key"
 logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(message)s", datefmt="%d/%m/%Y %H:%M:%S", handlers=[logging.StreamHandler(sys.stdout)])
 logger = logging.getLogger()
 
+app_name_text = os.path.basename(__file__).replace(".py", "")
+release_version = os.environ.get("RELEASE_VERSION", "unknown")
+logger.warning(f"{'*' * 50}\n")
+logger.warning(f"{app_name_text} Version: {release_version}\n")
+logger.warning(f"{'*' * 50}")
+
 torUserName = os.environ.get("torrenter_username", "user")
 torPassword = os.environ.get("torrenter_password", "password")
 torIP = os.environ.get("torrenter_ip", "192.168.1.2")
