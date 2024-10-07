@@ -299,8 +299,8 @@ logger.warning(f"{'*' * 50}\n")
 logger.warning(f"{app_name_text} Version: {release_version}\n")
 logger.warning(f"{'*' * 50}")
 
-torUserName = os.environ.get("torrenter_username", "user")
-torPassword = os.environ.get("torrenter_password", "password")
+torUserName = os.environ.get("torrenter_username", "")
+torPassword = os.environ.get("torrenter_password", "")
 torIP = os.environ.get("torrenter_ip", "192.168.1.2")
 torPort = os.environ.get("torrenter_port", "5678")
 torAddress = "http://" + torIP + ":" + torPort
