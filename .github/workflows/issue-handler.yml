@@ -1,0 +1,36 @@
+name: Close Non-Bug Issues
+
+on:
+  issues:
+    types: [opened]
+    
+  workflow_dispatch:
+  
+jobs:
+  close-issue-if-not-bug:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.PAT_TOKEN }}
+    steps:
+      - name: Check if the issue contains "bug"
+        id: check_bug
+        env:
+          BODY: ${{ github.event.issue.body }}
+          TITLE: ${{ github.event.issue.title }}
+        run: |
+          # Check if the title or body contains "bug"
+          if echo "$TITLE" | grep -qi 'bug' || echo "$BODY" | grep -qi 'bug'; then
+            echo "This is a bug-related issue. Keeping it open."
+            echo "is_bug=true" >> $GITHUB_ENV
+          else
+            echo "This is not a bug-related issue. Closing it."
+            echo "is_bug=false" >> $GITHUB_ENV
+          fi
+
+      - name: Close issue and add comment if not bug
+        if: env.is_bug == 'false'
+        run: |
+          COMMENT="**NOTE:** THIS IS AN AUTOMATICALLY GENERATED COMMENT."
+
+          # Close the issue and leave a comment using GitHub CLI
+          gh issue close ${{ github.event.issue.number }} --comment "$COMMENT" --repo ${{ github.repository }}
