@@ -20,7 +20,7 @@ jobs:
           ISSUE_BODY="${{ github.event.issue.body }}"
 
           # Check if the title or body contains "bug"
-          if echo "$ISSUE_TITLE" | grep -iq 'bug' || echo "$ISSUE_BODY" | grep -iq 'bug'; then
+          if echo "$ISSUE_TITLE" | grep -qi 'bug' || echo "$ISSUE_BODY" | grep -qi 'bug'; then
             echo "This is a bug-related issue. Keeping it open."
             echo "is_bug=true" >> $GITHUB_ENV
           else
@@ -52,7 +52,6 @@ It can be frustrating when an **issue** gets closed automatically, but this proc
 **Feature requests** are only considered if the requester contributes code or takes significant steps toward implementing the feature themselves. Without this commitment or partial coding effort, the request will not be considered. Thank you for your understanding!
 
 ---
-"
 
 **NOTE:** THIS IS AN AUTOMATICALLY GENERATED COMMENT."
 
