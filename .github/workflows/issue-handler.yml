@@ -1,6 +1,7 @@
 name: Close Non-Bug Issues
 
 on:
+  workflow_dispatch:
   issues:
     types: [opened]
 
@@ -13,10 +14,12 @@ jobs:
       - name: Check if the issue contains "bug"
         id: check_bug
         run: |
+          # Sanitize input by saving to environment variables
           ISSUE_TITLE="${{ github.event.issue.title }}"
           ISSUE_BODY="${{ github.event.issue.body }}"
 
-          if [[ "$ISSUE_TITLE" =~ [Bb]ug ]] || [[ "$ISSUE_BODY" =~ [Bb]ug ]]; then
+          # Check if the title or body contains "bug"
+          if echo "$ISSUE_TITLE" | grep -iq 'bug' || echo "$ISSUE_BODY" | grep -iq 'bug'; then
             echo "This is a bug-related issue. Keeping it open."
             echo "is_bug=true" >> $GITHUB_ENV
           else
