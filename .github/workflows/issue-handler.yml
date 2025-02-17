@@ -29,8 +29,8 @@ jobs:
 
       - name: Close issue and add comment if not bug
         if: env.is_bug == 'false'
-        run: |
-          COMMENT: |
+        env:
+         COMMENT: |
             ### Issue
             - **Feature Request:**  
             If this is a feature request, unfortunately no new features are planned at present. The goal of this project is to keep the feature set as minimal as possible. Consider forking this repository and creating your own image to suit your requirements.  
@@ -54,5 +54,6 @@ jobs:
             ---
 
             **NOTE:** THIS IS AN AUTOMATICALLY GENERATED COMMENT.
-
+            
+        run: |
           gh issue close ${{ github.event.issue.number }} --comment "$COMMENT" --repo ${{ github.repository }}
