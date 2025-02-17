@@ -30,29 +30,29 @@ jobs:
       - name: Close issue and add comment if not bug
         if: env.is_bug == 'false'
         run: |
-          COMMENT="### Issue
-- **Feature Request:**  
-If this is a feature request, unfortunately no new features are planned at present. The goal of this project is to keep the feature set as minimal as possible. Consider forking this repository and creating your own image to suit your requirements.  
-  **PRs** are open, but only for essential changes/features.
+          COMMENT: |
+            ### Issue
+            - **Feature Request:**  
+            If this is a feature request, unfortunately no new features are planned at present. The goal of this project is to keep the feature set as minimal as possible. Consider forking this repository and creating your own image to suit your requirements.  
+              **PRs** are open, but only for essential changes/features.
 
-- **Specific Issues:**  
-If you're experiencing an issue, please check through previous issues first, as it may have already been addressed.  
-If it hasn’t been covered, you'll need to clone this repository and run it locally to investigate the issue further. There are plenty of resources available to help you get familiar with Docker and the code used here, so please ensure you explore those fully.
-Please also note that this project may not work across all setups and systems.
+            - **Specific Issues:**  
+            If you're experiencing an issue, please check through previous issues first, as it may have already been addressed.  
+            If it hasn’t been covered, you'll need to clone this repository and run it locally to investigate the issue further. There are plenty of resources available to help you get familiar with Docker and the code used here, so please ensure you explore those fully.
+            Please also note that this project may not work across all setups and systems.
 
-- **Genuine Bugs:**  
-If you believe you've found a genuine bug that affects the main functionality, please raise an issue with detailed logs and a specific bug report. It would also be greatly appreciated if you can suggest a possible solution.
+            - **Genuine Bugs:**  
+            If you believe you've found a genuine bug that affects the main functionality, please raise an issue with detailed logs and a specific bug report. It would also be greatly appreciated if you can suggest a possible solution.
 
-Thanks, and best of luck!
+            Thanks, and best of luck!
 
----
+            ---
 
-It can be frustrating when an **issue** gets closed automatically, but this process helps keep track of actionable bugs.  
-**Feature requests** are only considered if the requester contributes code or takes significant steps toward implementing the feature themselves. Without this commitment or partial coding effort, the request will not be considered. Thank you for your understanding!
+            It can be frustrating when an **issue** gets closed automatically, but this process helps keep track of actionable bugs.  
+            **Feature requests** are only considered if the requester contributes code or takes significant steps toward implementing the feature themselves. Without this commitment or partial coding effort, the request will not be considered. Thank you for your understanding!
 
----
+            ---
 
-**NOTE:** THIS IS AN AUTOMATICALLY GENERATED COMMENT."
+            **NOTE:** THIS IS AN AUTOMATICALLY GENERATED COMMENT.
 
-          # Close the issue and leave a comment using GitHub CLI
           gh issue close ${{ github.event.issue.number }} --comment "$COMMENT" --repo ${{ github.repository }}
