@@ -1,8 +1,8 @@
-gunicorn
-pandas
-requests
-beautifulsoup4
-flask
-lxml
-qbittorrent-api
-plexapi
+gunicorn==23.0.0
+pandas==2.2.3
+requests==2.32.3
+beautifulsoup4==4.13.3
+flask==3.1.0
+lxml==5.3.1
+qbittorrent-api==2024.12.71
+plexapi==4.16.1
